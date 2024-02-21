@@ -1,0 +1,57 @@
+using System;
+using System.Linq;
+using System.Collections.Generic;
+
+internal class Program
+{
+    private static void Main(string[] args)
+    {
+        SetCannedMeat setCannedMeat = new SetCannedMeat();
+        setCannedMeat.ShowExpiredCannedMeats();
+        Console.ReadKey();
+    }
+}
+
+public class CannedMeat
+{
+    public CannedMeat(string name, int productionYear, int expirationPeriod)
+    {
+        Name = name;
+        ProductionYear = productionYear;
+        ExpirationPeriod = expirationPeriod;
+    }
+
+    public string Name { get; private set; }
+    public int ProductionYear { get; private set; }
+    public int ExpirationPeriod { get; private set; }
+
+    public void ShowInfo()
+    {
+        Console.WriteLine($"Тушонка '{Name}': дата производства - {ProductionYear}, срок годности -{ExpirationPeriod}.");
+    }
+}
+
+public class SetCannedMeat
+{
+    private List<CannedMeat> _cannedMeats;
+
+    public SetCannedMeat()
+    {
+        _cannedMeats = new List<CannedMeat>
+        {
+            new CannedMeat("Говядина", 2018, 3),
+            new CannedMeat("Свинина", 2020, 2),
+            new CannedMeat("курица", 2024, 1)
+        };
+    }
+
+    public void ShowExpiredCannedMeats()
+    {
+        List<CannedMeat> expiredMeats = _cannedMeats.Where(cannedMeat => cannedMeat.ProductionYear + cannedMeat.ExpirationPeriod > DateTime.Now.Year).ToList();
+
+        foreach (var cannedMeat in expiredMeats)
+        {
+            cannedMeat.ShowInfo();
+        }
+    }
+}
